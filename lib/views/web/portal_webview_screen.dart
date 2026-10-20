@@ -1,17 +1,26 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../../core/network/api_client.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/heartbeat_loader.dart';
 
-// ─── إعدادات الروابط (تغيير الروابط من هنا مباشرة) ──────────────────────────
+// ─── إعدادات الروابط (تتغير تلقائياً بحسب بيئة الخادم في ApiClient) ──────────────
 
 class WebPortalConfig {
+  static String get portalBaseUrl {
+    final base = ApiClient().baseUrl;
+    if (base.endsWith('/api')) {
+      return base.substring(0, base.length - 4);
+    }
+    return 'https://uhos.online/student';
+  }
+
   // رابط التقويم الدراسي
-  static const String calendarUrl = 'https://uhos.online/student/calendar.php';
+  static String get calendarUrl => '$portalBaseUrl/calendar.php';
 
   // رابط التحصيل الأكاديمي والنتائج
-  static const String academicUrl = 'https://uhos.online/student/academic.php';
+  static String get academicUrl => '$portalBaseUrl/academic.php';
 }
 
 // ─── Portal WebView Screen ──────────────────────────────────────────────────
